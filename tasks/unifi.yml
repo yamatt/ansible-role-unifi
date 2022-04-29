@@ -11,7 +11,7 @@
 - name: Install Jellyfin image
   docker_container:
     name: unifi
-    image: "linuxserver/unifi-controller:{{ jellyfin_version }}"
+    image: "linuxserver/unifi-controller:{{ unifi_version }}"
     container_default_behavior: compatibility
     state: started
     restart: yes
