@@ -1,0 +1,49 @@
+---
+- name: Make certbot directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  loop:
+    - "{{ certbot_state_path }}"
+
+- name: Generate DH params
+  command: "openssl dhparam -out {{ nginx_certs_path }}/dhparam.pem 4096"
+  args:
+    creates: "{{ nginx_certs_path }}/dhparam.pem"
+  when: not testing | default('no') | bool
+
+- name: Check if certbot has been successfully run before
+  stat:
+    path: "{{ nginx_certs_path }}/live/{{ domain }}/fullchain.pem"
+  register: certs_file
+
+- name: Run certbot image
+  docker_container:
+    name: certbot
+    image: "certbot/certbot:{{ certbot_version }}"
+    command: "certonly --non-interactive --agree-tos --email {{ email }} --webroot -w /var/www -d {{ domain }}"
+    container_default_behavior: compatibility
+    volumes:
+      - "{{ nginx_certs_path }}:{{ certbot_certs_volume_path }}"
+      - "{{ certbot_state_path }}:{{ certbot_state_volume_path }}"
+      - "{{ nginx_web_root_path }}:{{ certbot_webroot_volume_path }}:rw"
+  when: (not testing | default('no') | bool) or (not certs_file.stat.exists)
+
+- name: Renew certbot image
+  docker_container:
+    name: certbot-renew
+    image: "certbot/certbot:{{ certbot_version }}"
+    command: "certonly renew"
+    volumes:
+      - "{{ nginx_certs_path }}:{{ certbot_certs_volume_path }}"
+      - "{{ certbot_state_path }}:{{ certbot_state_volume_path }}"
+      - "{{ nginx_web_root_path }}:{{ certbot_webroot_volume_path }}:rw"
+  when: (not testing | default('no') | bool) and certs_file.stat.exists
+
+- name: Add cert configuration to nginx
+  template:
+    src: certbot/nginx-certs.conf.j2
+    dest: "{{ nginx_certs_config_path }}"
+  notify: Restart Nginx
+  when: not testing | default('no') | bool

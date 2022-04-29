@@ -1,0 +1,7 @@
+---
+- name: Check timesyncd is running
+  service:
+    name: systemd-timesyncd
+    state: started
+    masked: no
+    enabled: yes

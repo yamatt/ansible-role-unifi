@@ -1,0 +1,22 @@
+---
+# Handler for auditd service
+- name: rule merge
+  command: augenrules
+  notify: restart auditd
+
+- name: restart auditd
+  service: name=auditd state=restarted
+
+# Handler for firewalld service
+- name: restart ufw
+  service:
+    name: ufw
+    state: restarted
+
+# Handler for nginx service
+- name: Restart Nginx
+  docker_container:
+    name: nginx
+    state: started
+    restart: yes
+    container_default_behavior: compatibility

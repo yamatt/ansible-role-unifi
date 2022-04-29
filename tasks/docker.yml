@@ -1,0 +1,59 @@
+---
+- name: Install Docker dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python3-docker
+    - apt-transport-https
+    - ca-certificates
+    - software-properties-common
+
+- name: Create temporary file to place docker respository GPG key
+  tempfile:
+    state: file
+  register: tempory_key
+
+- name: Copy over docker respository GPG key
+  copy:
+    src: docker/docker.gpg
+    dest: "{{ tempory_key.path }}"
+
+- name: Add docker respository GPG key
+  apt_key:
+    file: "{{ tempory_key.path }}"
+    state: present
+
+- name: Add docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    state: present
+    filename: docker
+
+- name: Ensure config directories exist
+  file:
+    path: "{{ docker_config_directory_path }}"
+    state: directory
+
+- name: Create docker data directory
+  file:
+    path: "{{ docker_config['data-root'] }}"
+    state: directory
+
+- name: Write out config file
+  copy:
+    content: "{{ docker_config | to_json }}"
+    dest: "{{ docker_config_file_path }}"
+
+- name: Install docker
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+
+- name: Ensure docker is running
+  service:
+    name: docker
+    state: started
+    masked: no
+    enabled: yes

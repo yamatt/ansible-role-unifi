@@ -1,0 +1,11 @@
+---
+- name: Create swap file
+  command: "dd if=/dev/zero of={{ swap_file_path }} bs={{ ansible_memtotal_mb }} count=1048576"
+
+- name : Format swap
+  filesystem:
+    fstype: swap
+    dev: "{{ swap_file_path }}"
+
+- name: Enable swap
+  command: "swapon {{ swap_file_path }}"

@@ -1,0 +1,24 @@
+---
+- name: Install auditd
+  apt:
+    name: auditd
+    state: present
+
+- name: Start the auditd service
+  service:
+    name: auditd
+    state: started
+    enabled: yes
+
+# NOTE: Is the audit dir (/var/log/audit/audit.log) audited?
+- name: Create /tmp rules
+  copy:
+    src: audit/tmp.rules
+    dest: "{{ audit_rules_dir }}"
+  notify: rule merge
+
+- name: create admin home rules
+  copy:
+    src: audit/admin-home.rules
+    dest: "{{ audit_rules_dir }}"
+  notify: rule merge

@@ -1,0 +1,6 @@
+---
+- name: check rclone media directory is mount point
+  command: mountpoint -q /mnt/media
+
+- name: check rclone service is running
+  command: service rclone status

@@ -1,0 +1,52 @@
+---
+- name: Install duplicity
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - duplicity
+    - gnupg2
+
+- name: Install the b2 python package so duplicity can use it
+  pip:
+    name: "b2sdk=={{ backups_b2_sdk_version }}"
+
+- name: Create directory for duplicity state files
+  file:
+    path: "{{ duplicity_state_directory_path }}"
+    state: directory
+    recurse: yes
+
+- name: copy over public gpg key
+  copy:
+    src: "backups/{{ gpg_public_key_file_name }}"
+    dest: "{{ gpg_public_key_destination_file_path }}"
+
+- name: copy over trust public gpg key
+  copy:
+    src: "backups/{{ gpg_trust_public_key_file_name }}"
+    dest: "{{ gpg_trust_public_key_destination_file_path }}"
+
+- name: add public gpg key to gpg keyring
+  command: gpg --import "{{ gpg_public_key_destination_file_path }}"
+
+- name: add trust of public gpg key to gpg keyring
+  command: gpg --import-ownertrust "{{ gpg_trust_public_key_destination_file_path }}"
+
+- name: setup duplicity systemd timer
+  copy:
+    src: "backups/duplicity-backup.timer"
+    dest: "/etc/systemd/system/duplicity-backups.timer"
+
+- name: setup duplicity systemd service
+  template:
+    src: "backups/duplicity-backup.service.j2"
+    dest: "/etc/systemd/system/duplicity-backups.service"
+
+- name: enable and start systemd timer
+  ansible.builtin.systemd:
+    name: duplicity-backups.timer
+    state: started
+    enabled: yes
+    masked: no
+  when: not testing | default('no') | bool

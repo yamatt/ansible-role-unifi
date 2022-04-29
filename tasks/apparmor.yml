@@ -1,0 +1,15 @@
+---
+- name: install addtional profiles
+  apt:
+    name: apparmor-profiles
+    state: present
+
+- name: Ensure apparmor is enabled
+  service:
+    name: apparmor
+    enabled: yes
+
+- name: Ensure apparmor is running
+  service:
+    name: apparmor
+    state: started

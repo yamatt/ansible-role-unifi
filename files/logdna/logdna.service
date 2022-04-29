@@ -1,0 +1,8 @@
+[Unit]
+Description=LogDNA
+RefuseManualStart=no
+RefuseManualStop=no
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/logdna-agent

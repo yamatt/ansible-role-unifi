@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  connection: local
+  become: yes
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python3"
+  roles:
+    - unifi
+    - tests

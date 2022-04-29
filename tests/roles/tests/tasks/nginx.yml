@@ -1,0 +1,44 @@
+---
+
+- block:
+  - name: Check nginx is running
+    command: curl --output /dev/null --silent --head --fail http://localhost
+    args:
+      warn: no # recommends to use get_url when get_url fails in this case
+
+  - name: Create base directory
+    file:
+      path: "{{ nginx_check_full_directory_path }}"
+      state: directory
+
+  - name: Create file to check
+    file:
+      path: "{{ nginx_check_file_path }}"
+      state: touch
+
+  - name: Restart Nginx
+    docker_container:
+      name: nginx
+      state: started
+      restart: yes
+      container_default_behavior: compatibility
+
+  - name: Create temporary file to place nginx test output
+    tempfile:
+      state: file
+    register: tempory_file
+
+  - name: Check file exists
+    get_url:
+      url: "http://localhost/{{ nginx_check_file_url_path }}"
+      dest: "{{ tempory_file.path }}"
+  rescue:
+    - command: docker logs nginx
+      register: nginx_out
+
+    - debug:
+        var: nginx_out.stdout_lines
+
+    - name: re-raise the error
+      fail:
+        msg: "{{ ansible_failed_result }}"

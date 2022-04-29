@@ -1,0 +1,44 @@
+---
+- name: Ensure ufw is installed
+  apt:
+    name: ufw
+    state: present
+
+# UFW has it's own service management layer. So no service module needed
+- name: Start the ufw service
+  ufw:
+    state: enabled
+
+- name: setup default outgoing rule
+  ufw:
+    rule: allow
+    direction: out
+
+- name: setup default outgoing rule
+  ufw:
+    rule: allow
+    direction: out
+
+- name: Limit number of SSH connections
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+  when: enable_ssh
+
+- name: Allow SSH access
+  ufw:
+    rule: allow
+    name: OpenSSH
+  when: enable_ssh
+
+- name: Disable SSH access if requested
+  ufw:
+    rule: reject
+    name: OpenSSH
+  when: not enable_ssh
+
+- name: set default incoming rule
+  ufw:
+    rule: deny
+    direction: in

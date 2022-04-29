@@ -1,0 +1,62 @@
+---
+
+#apt
+apt_conf_d: /etc/apt/apt.conf.d/
+
+# disks
+data_disk_fs_type: xfs
+data_disk_device_path: /dev/sda
+data_disk_mount_point: /mnt/data
+
+# swap
+swap_file_path: /swap
+
+#auditd
+audit_rules_dir: "/etc/audit/rules.d/"
+
+# ssh
+enable_ssh: true
+
+# docker
+docker_config_directory_path: /etc/docker
+docker_config_file_path: "{{ docker_config_directory_path}}/daemon.json"
+docker_config:
+  data-root: "{{ data_disk_mount_point }}/config/docker/state"
+
+# nginx
+nginx_path: "{{ data_disk_mount_point }}/config/nginx/volumes"
+
+nginx_config_path: "{{ nginx_path }}/config"
+nginx_config_volume_path: /etc/nginx/conf.d
+
+nginx_certs_config_path: "{{ nginx_config_path }}/certs.conf"
+
+nginx_config_webgateway_path: "{{ nginx_config_path }}/webgateway"
+
+nginx_certs_path: "{{ nginx_path }}/certs"
+nginx_certs_volume_path: /etc/nginx/ssl/
+
+nginx_default_config_path: "{{ nginx_config_path }}/default.conf"
+
+nginx_web_root_path: "{{ nginx_path }}/webroot"
+nginx_web_root_volume_path: "/var/www"
+
+webgateway_network_name: webgateway
+
+# certbot
+certbot_path: "{{ data_disk_mount_point }}/config/certbot/volumes"
+
+certbot_certs_volume_path: /etc/letsencrypt
+
+certbot_state_path: "{{ certbot_path }}/state"
+certbot_state_volume_path: /var/lib/letsencrypt
+
+# the nginx path is used as the source path
+certbot_webroot_volume_path: /var/www
+
+# unifi
+
+unifi_base_path: "{{ data_disk_mount_point }}/config/unifi/volumes"
+
+unifi_config_path: "{{ unifi_base_path }}/config"
+unifi_config_volume_path: "/config"

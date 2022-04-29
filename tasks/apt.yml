@@ -1,0 +1,19 @@
+---
+- name: ensure everything is up to date and patched
+  apt:
+    update_cache: yes
+    upgrade: yes
+    force_apt_get: yes
+
+- name: Install common packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - aptitude
+    - unattended-upgrades
+
+- name: Enforce automatic updates
+  copy:
+    src: apt/20auto-upgrades
+    dest: "{{ apt_conf_d }}"
