@@ -39,7 +39,7 @@ jobs:
       - name: Install this role locally
         run: ansible-galaxy install git+https://github.com/${GITHUB_REPOSITORY}.git
       - name: Run role
-        run: ansible --become --connection=local --inventory 127.0.0.1, --extra-vars "@tests/extra-vars.yml" --module-name include_role -a name=ansible-role-media localhost
+        run: ansible --become --connection=local --inventory 127.0.0.1, --extra-vars "@tests/extra-vars.yml" --module-name include_role -a name=ansible-role-unifi localhost
       - name: Run tests
         run: ansible --become --connection=local --inventory 127.0.0.1, --module-name include_role -a name=tests localhost
   trigger:
