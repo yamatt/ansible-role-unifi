@@ -52,7 +52,7 @@ jobs:
       - name: Trigger update to instance
         uses: mvasigh/dispatch-action@main
         with:
-          token: ${{ secrets.TF_MEDIA_PERSONAL_ACCESS_TOKEN }}
-          repo: tf-media
+          token: ${{ secrets.TF_UNIFI_PERSONAL_ACCESS_TOKEN }}
+          repo: tf-scaleway-unifi
           owner: yamatt
           event_type: update
