@@ -43,7 +43,7 @@ jobs:
       - name: Run tests
         run: ansible --become --connection=local --inventory 127.0.0.1, --module-name include_role -a name=tests localhost
   trigger:
-    name: If Lint and Test is successful trigger update on infrastructure
+    name: Update infrastructure
     needs:
       - lint
       - test
