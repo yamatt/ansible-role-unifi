@@ -8,7 +8,7 @@
     - "{{ unifi_base_path }}"
     - "{{ unifi_config_path }}"
 
-- name: Install Jellyfin image
+- name: Install Unifi image
   docker_container:
     name: unifi
     image: "linuxserver/unifi-controller:{{ unifi_version }}"
