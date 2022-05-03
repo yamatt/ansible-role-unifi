@@ -1,6 +1,7 @@
 location / {
 
-    proxy_pass http://unifi:8443/;
+    proxy_pass https://unifi:8443/;
+    proxy_ssl_verify off;
 
     proxy_pass_request_headers on;
 
