@@ -8,6 +8,11 @@
     - "{{ unifi_base_path }}"
     - "{{ unifi_config_path }}"
 
+- name: Create unifi configuration for nginx
+  template:
+    src: nginx/unifi.conf.j2
+    dest: "{{ nginx_config_webgateway_path }}/unifi.conf"
+
 - name: Install Unifi image
   docker_container:
     name: unifi
