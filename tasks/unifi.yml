@@ -22,7 +22,7 @@
     restart: yes
     published_ports:
       - "0.0.0.0:3478:3478/udp"
-      - "0.0.0.0:8080:8080/udp"
+      - "0.0.0.0:8080:8080/tcp"
 
     volumes:
       - "{{ unifi_config_path }}:{{ unifi_config_volume_path }}"
@@ -37,7 +37,7 @@
   community.general.ufw:
     rule: allow
     port: 8080
-    proto: udp
+    proto: tcp
 
 - name: Connect to web gateway network to communicate with nginx
   community.general.docker_network:
