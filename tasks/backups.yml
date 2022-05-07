@@ -3,6 +3,15 @@
   ansible.builtin.pip:
     name: "b2=={{ backups_b2_version }}"
 
+- name: authorise access to b2
+  ansible.builtin.command:
+    argv:
+      - "b2"
+      - "authorize-account"
+      - "{{ b2_unifi_backups_application_key_id }}"
+      - "{{ b2_unifi_backups_application_key }}"
+  creates: /root/.b2_account_info
+
 - name: setup b2 systemd timer
   copy:
     src: "backups/b2-backup.timer"
