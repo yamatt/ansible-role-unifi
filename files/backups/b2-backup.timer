@@ -1,0 +1,9 @@
+[Unit]
+Description=Trigger B2 Backup every day
+
+[Timer]
+OnCalendar=*-*-* 10:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

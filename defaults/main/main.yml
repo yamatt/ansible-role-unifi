@@ -17,6 +17,9 @@ audit_rules_dir: "/etc/audit/rules.d/"
 # ssh
 enable_ssh: true
 
+# backups
+backup_directory: "{{ data_disk_mount_point }}"
+
 # docker
 docker_config_directory_path: /etc/docker
 docker_config_file_path: "{{ docker_config_directory_path}}/daemon.json"

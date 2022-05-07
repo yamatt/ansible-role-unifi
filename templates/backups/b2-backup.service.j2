@@ -1,0 +1,8 @@
+[Unit]
+Description=Backup Unifi data to B2
+RefuseManualStart=no
+RefuseManualStop=yes
+
+[Service]
+Type=simple
+ExecStart=b2 sync {{ backup_directory }} {{ b2_unifi_backups_url }}
