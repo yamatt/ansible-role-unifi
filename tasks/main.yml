@@ -17,6 +17,7 @@
   when: not testing | default('no') | bool
 #- include_tasks: cagent.yml
 - include_tasks: logdna.yml
+  when: not testing | default('no') | bool
 - include_tasks: firewall.yml
 
 - include_tasks: rebuild.yml
