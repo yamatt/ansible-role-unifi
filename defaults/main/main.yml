@@ -15,7 +15,7 @@ swap_file_path: /swap
 audit_rules_dir: "/etc/audit/rules.d/"
 
 # ssh
-enable_ssh: true
+enable_ssh: false
 
 # backups
 backup_directory: "{{ unifi_config_path }}/data"
