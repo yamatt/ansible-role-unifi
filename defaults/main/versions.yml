@@ -1,6 +1,6 @@
 ---
 # versions
-backups_b2_version: 3.5.0  # https://pypi.org/project/b2/
-certbot_version: v1.29.0 # https://hub.docker.com/r/certbot/certbot/tags
-unifi_version: amd64-7.1.68 # https://hub.docker.com/r/linuxserver/unifi-controller/tags?page=1&name=amd64
-nginx_version: 1.23.1 # https://hub.docker.com/_/nginx?tab=tags
+backups_b2_version: 3.6.0  # https://pypi.org/project/b2/
+certbot_version: v1.32.0 # https://hub.docker.com/r/certbot/certbot/tags
+unifi_version: amd64-7.3.76 # https://hub.docker.com/r/linuxserver/unifi-controller/tags?page=1&name=amd64
+nginx_version: 1.23.2 # https://hub.docker.com/_/nginx?tab=tags
