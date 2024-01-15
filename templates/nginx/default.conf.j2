@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ domain }};
+    server_name {{ secrets.DOMAIN }};
 
     location /.well-known {
       root /var/www;

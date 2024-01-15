@@ -15,14 +15,14 @@
 
 - name: Check if certbot has been successfully run before
   stat:
-    path: "{{ nginx_certs_path }}/live/{{ domain }}/fullchain.pem"
+    path: "{{ nginx_certs_path }}/live/{{ secrets.DOMAIN }}/fullchain.pem"
   register: certs_file
 
 - name: Run certbot image
   docker_container:
     name: certbot
     image: "certbot/certbot:{{ certbot_version }}"
-    command: "certonly --non-interactive --agree-tos --email {{ domain_email }} --webroot -w /var/www -d {{ domain }}"
+    command: "certonly --non-interactive --agree-tos --email {{ secrets.CONTACT_EMAIL }} --webroot -w /var/www -d {{ secrets.DOMAIN }}"
     container_default_behavior: compatibility
     volumes:
       - "{{ nginx_certs_path }}:{{ certbot_certs_volume_path }}"

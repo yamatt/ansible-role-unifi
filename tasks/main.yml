@@ -13,12 +13,15 @@
   when: not testing | default('no') | bool
 - include_tasks: timesync.yml
   when: not testing | default('no') | bool
-- include_tasks: backups.yml
-  when: not testing | default('no') | bool
+#- include_tasks: backups.yml
+#  when: not testing | default('no') | bool
 #- include_tasks: cagent.yml
 - include_tasks: logdna.yml
   when: not testing | default('no') | bool
 - include_tasks: firewall.yml
+
+- include_tasks: secrets.yml
+  when: not testing | default('no') | bool
 
 - include_tasks: rebuild.yml
 
