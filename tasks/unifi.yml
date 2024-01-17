@@ -17,7 +17,6 @@
   docker_container:
     name: unifi
     image: "linuxserver/unifi-controller:{{ unifi_version }}"
-    container_default_behavior: compatibility
     state: started
     restart: yes
     published_ports:

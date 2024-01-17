@@ -21,7 +21,6 @@
       name: nginx
       state: started
       restart: yes
-      container_default_behavior: compatibility
 
   - name: Create temporary file to place nginx test output
     tempfile:

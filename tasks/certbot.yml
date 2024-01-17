@@ -23,7 +23,6 @@
     name: certbot
     image: "certbot/certbot:{{ certbot_version }}"
     command: "certonly --non-interactive --agree-tos --email {{ secrets.CONTACT_EMAIL }} --webroot -w /var/www -d {{ secrets.DOMAIN }}"
-    container_default_behavior: compatibility
     volumes:
       - "{{ nginx_certs_path }}:{{ certbot_certs_volume_path }}"
       - "{{ certbot_state_path }}:{{ certbot_state_volume_path }}"
