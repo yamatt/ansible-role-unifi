@@ -27,13 +27,13 @@
       - "{{ unifi_config_path }}:{{ unifi_config_volume_path }}"
 
 - name: Allow STUN UDP port
-  community.general.ufw:
+  ufw:
     rule: allow
     port: 3478
     proto: udp
 
 - name: device and application communication
-  community.general.ufw:
+  ufw:
     rule: allow
     port: 8080
     proto: tcp
