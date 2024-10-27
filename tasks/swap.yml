@@ -1,11 +1,19 @@
 ---
-- name: Create swap file
-  command: "dd if=/dev/zero of={{ swap_file_path }} bs={{ ansible_memtotal_mb }} count=1048576"
+- name: Check that the swap file
+  stat:
+    path: "{{ swap_file_path }}"
+  register: swap_file
 
-- name : Format swap
+- name: Create swap file
+  ansible.builtin.command: "dd if=/dev/zero of={{ swap_file_path }} bs={{ ansible_memtotal_mb }} count=1048576"
+  when: not swap_file.stat.exists
+
+- name: Format swap
   filesystem:
     fstype: swap
     dev: "{{ swap_file_path }}"
+  when: not swap_file.stat.exists
 
 - name: Enable swap
   command: "swapon {{ swap_file_path }}"
+  when: not swap_file.stat.exists
