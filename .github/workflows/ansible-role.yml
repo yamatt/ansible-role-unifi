@@ -8,19 +8,12 @@ jobs:
     name: Lint
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.12'
-          cache: 'pipenv'
-      - name: Install pipenv
-        run: python3 -m pip install pipenv
-      - name: Install dependencies
-        run: pipenv install
+      - uses: actions/checkout@v4
       - name: Run ansible-lint
-        run: |
-          pipenv run ansible-lint
+        uses: ansible/ansible-lint@main
+        with:
+          args: ""
+          setup_python: "true"
     continue-on-error: true
   test:
     name: Run Tests
@@ -28,22 +21,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install python3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pipenv'
-      - name: Install pipenv
-        run: python3 -m pip install pipenv
-      - name: Install ansible
-        run: pipenv install
+          python-version: "3.12"
+      - name: Install a specific version
+        uses: eifinger/setup-rye@v4
+      - name: Install dependencies
+        run: rye sync
       - name: Create file to simulate an attached disk
         run: sudo truncate -s 5G /testdisk
       - name: Install this role locally
-        run: ansible-galaxy install git+https://github.com/${GITHUB_REPOSITORY}.git
+        run: rye run ansible-galaxy install git+https://github.com/${GITHUB_REPOSITORY}.git
       - name: Run role
-        run: pipenv run ansible --become --connection=local --inventory 127.0.0.1, --extra-vars "@tests/extra-vars.yml" --module-name include_role -a name=ansible-role-unifi localhost
+        run: rye run ansible --become --connection=local --inventory 127.0.0.1, --extra-vars "@tests/extra-vars.yml" --module-name include_role -a name=ansible-role-unifi localhost
       - name: Run tests
-        run: pipenv run ansible --become --connection=local --inventory 127.0.0.1, --module-name include_role -a name=tests localhost
+        run: rye run ansible --become --connection=local --inventory 127.0.0.1, --module-name include_role -a name=tests localhost
   trigger:
     name: If Lint and Test is successful trigger update on infrastructure
     needs:
