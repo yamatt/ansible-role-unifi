@@ -28,5 +28,4 @@
 - ansible.builtin.include_tasks: docker.yml
 - ansible.builtin.include_tasks: nginx.yml
 - ansible.builtin.include_tasks: certbot.yml
-  when: not testing | default('no') | bool
 - ansible.builtin.include_tasks: unifi.yml

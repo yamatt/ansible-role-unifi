@@ -7,3 +7,6 @@ data_disk_device_path: /testdisk
 # nginx
 domain: test.example.com
 domain_email: test@example.com
+
+secrets:
+  DOMAIN: test.example.com
