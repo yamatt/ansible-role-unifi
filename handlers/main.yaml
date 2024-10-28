@@ -2,6 +2,7 @@
 # Handler for auditd service
 - name: Rule merge
   ansible.builtin.command: augenrules
+  changed_when: true
   notify: Restart auditd
 
 - name: Restart auditd

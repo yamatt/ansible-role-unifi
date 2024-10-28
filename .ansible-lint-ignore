@@ -1,2 +1,5 @@
 # the include is descriptive they don't need names
 tasks/main.yml name[missing]
+
+# have to use curl as it needs to be piped to curl to get it in to a variables format
+tasks/secrets.yml command-instead-of-module
