@@ -5,4 +5,4 @@ RefuseManualStop=yes
 
 [Service]
 Type=simple
-ExecStart=b2 sync {{ backup_directory }} {{ b2_unifi_backups_url }}
+ExecStart=b2 sync {{ backup_directory }} {{ secrets.B2_DESTINATION_PATH }}

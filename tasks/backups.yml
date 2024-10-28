@@ -1,15 +1,16 @@
 ---
 - name: Install the b2 python package so duplicity can use it
   ansible.builtin.pip:
-    name: "b2=={{ backups_b2_version }}"
+    name: "b2[full]=={{ backups_b2_version }}"
 
 - name: Authorise access to b2
   ansible.builtin.command:
     argv:
       - "b2"
-      - "authorize-account"
-      - "{{ b2_unifi_backups_application_key_id }}"
-      - "{{ b2_unifi_backups_application_key }}"
+      - "account"
+      - "authorize"
+      - "{{ secrets.B2_APPLICATION_KEY_ID }}"
+      - "{{ secrets.B2_APPLICATION_KEY_SECRET }}"
     creates: /root/.b2_account_info
 
 - name: Setup b2 systemd timer
