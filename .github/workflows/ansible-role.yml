@@ -14,7 +14,6 @@ jobs:
         with:
           args: ""
           setup_python: "true"
-    continue-on-error: true
   test:
     name: Run Tests
     runs-on: ubuntu-22.04
