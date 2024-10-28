@@ -10,3 +10,4 @@ domain_email: test@example.com
 
 secrets:
   DOMAIN: test.example.com
+  CONTACT_EMAIL: test@example.com
