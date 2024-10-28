@@ -25,14 +25,20 @@ black==24.10.0
     # via ansible-lint
 bracex==2.5.post1
     # via wcmatch
+certifi==2024.8.30
+    # via requests
 cffi==1.17.1
     # via cryptography
+charset-normalizer==3.4.0
+    # via requests
 click==8.1.7
     # via black
 cryptography==43.0.3
     # via ansible-core
 filelock==3.16.1
     # via ansible-lint
+idna==3.10
+    # via requests
 importlib-metadata==8.5.0
     # via ansible-lint
 jinja2==3.1.4
@@ -73,6 +79,7 @@ pyyaml==6.0.2
 referencing==0.35.1
     # via jsonschema
     # via jsonschema-specifications
+requests==2.32.3
 resolvelib==1.0.1
     # via ansible-core
 rich==13.9.3
@@ -87,6 +94,8 @@ ruamel-yaml-clib==0.2.12
 subprocess-tee==0.4.2
     # via ansible-compat
     # via ansible-lint
+urllib3==2.2.3
+    # via requests
 wcmatch==10.0
     # via ansible-lint
 yamllint==1.35.1
