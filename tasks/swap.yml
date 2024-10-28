@@ -1,6 +1,6 @@
 ---
 - name: Check that the swap file
-  stat:
+  ansible.builtin.stat:
     path: "{{ swap_file_path }}"
   register: swap_file
 
@@ -9,11 +9,11 @@
   when: not swap_file.stat.exists
 
 - name: Format swap
-  filesystem:
+  community.general.filesystem:
     fstype: swap
     dev: "{{ swap_file_path }}"
   when: not swap_file.stat.exists
 
 - name: Enable swap
-  command: "swapon {{ swap_file_path }}"
+  ansible.builtin.command: "swapon {{ swap_file_path }}"
   when: not swap_file.stat.exists

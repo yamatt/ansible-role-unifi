@@ -1,6 +1,6 @@
 ---
 - name: Install Docker dependencies
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop:
@@ -10,50 +10,54 @@
     - software-properties-common
 
 - name: Create temporary file to place docker respository GPG key
-  tempfile:
+  ansible.builtin.tempfile:
     state: file
   register: tempory_key
 
 - name: Copy over docker respository GPG key
-  copy:
+  ansible.builtin.copy:
     src: docker/docker.gpg
     dest: "{{ tempory_key.path }}"
+    mode: "0644"
 
 - name: Add docker respository GPG key
-  apt_key:
+  ansible.builtin.apt_key:
     file: "{{ tempory_key.path }}"
     state: present
 
 - name: Add docker repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu "{{ docker_ubuntu_release }}" stable
     state: present
     filename: docker
 
 - name: Ensure config directories exist
-  file:
+  ansible.builtin.file:
     path: "{{ docker_config_directory_path }}"
     state: directory
+    mode: "0755"
 
 - name: Create docker data directory
-  file:
+  ansible.builtin.file:
     path: "{{ docker_config['data-root'] }}"
     state: directory
+    mode: "0755"
 
 - name: Write out config file
-  copy:
+  ansible.builtin.copy:
     content: "{{ docker_config | to_json }}"
     dest: "{{ docker_config_file_path }}"
+    mode: "0644"
 
 - name: Install docker
-  apt:
+  ansible.builtin.apt:
     name: docker-ce
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Ensure docker is running
-  service:
+  ansible.builtin.service:
     name: docker
     state: started
-    masked: no
-    enabled: yes
+    masked: false
+    enabled: true

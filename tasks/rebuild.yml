@@ -1,5 +1,5 @@
 ---
 - name: Remove nginx config that cause complications on rebuild
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_certs_config_path }}"
     state: absent

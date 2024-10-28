@@ -1,25 +1,26 @@
 ---
 - name: Make nginx config directory
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    recurse: yes
+    recurse: true
   loop:
     - "{{ nginx_config_path }}"
     - "{{ nginx_certs_path }}"
     - "{{ nginx_config_webgateway_path }}"
 
 - name: Create default configuration
-  template:
+  ansible.builtin.template:
     src: nginx/default.conf.j2
     dest: "{{ nginx_default_config_path }}"
+    mode: "0644"
 
 - name: Install Nginx image
   community.docker.docker_container:
     name: nginx
     image: "nginx:{{ nginx_version }}"
     state: started
-    restart: yes
+    restart: true
     published_ports:
       - "0.0.0.0:80:80/tcp"
       - "0.0.0.0:443:443/tcp"

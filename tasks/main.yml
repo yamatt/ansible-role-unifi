@@ -1,31 +1,31 @@
 ---
 - name: Gather facts
-  setup:
+  ansible.builtin.setup:
     gather_subset: all
-- include_tasks: apt.yml
+- ansible.builtin.include_tasks: apt.yml
   when: not testing | default('no') | bool
-- include_tasks: disks.yml
-- include_tasks: swap.yml
-- include_tasks: auditd.yml
-- include_tasks: apparmor.yml
-- include_role:
+- ansible.builtin.include_tasks: disks.yml
+- ansible.builtin.include_tasks: swap.yml
+- ansible.builtin.include_tasks: auditd.yml
+- ansible.builtin.include_tasks: apparmor.yml
+- ansible.builtin.include_role:
     name: dev-sec.os-hardening
   when: not testing | default('no') | bool
-- include_tasks: timesync.yml
+- ansible.builtin.include_tasks: timesync.yml
   when: not testing | default('no') | bool
 #- include_tasks: backups.yml
 #  when: not testing | default('no') | bool
 #- include_tasks: cagent.yml
 #- include_tasks: logdna.yml
 #  when: not testing | default('no') | bool
-- include_tasks: firewall.yml
+- ansible.builtin.include_tasks: firewall.yml
 
-- include_tasks: secrets.yml
+- ansible.builtin.include_tasks: secrets.yml
   when: not testing | default('no') | bool
 
-- include_tasks: rebuild.yml
+- ansible.builtin.include_tasks: rebuild.yml
 
-- include_tasks: docker.yml
-- include_tasks: nginx.yml
-- include_tasks: certbot.yml
-- include_tasks: unifi.yml
+- ansible.builtin.include_tasks: docker.yml
+- ansible.builtin.include_tasks: nginx.yml
+- ansible.builtin.include_tasks: certbot.yml
+- ansible.builtin.include_tasks: unifi.yml

@@ -1,12 +1,12 @@
 ---
-- name: ensure everything is up to date and patched
-  apt:
-    update_cache: yes
-    upgrade: yes
-    force_apt_get: yes
+- name: Ensure everything is up to date and patched
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: true
+    force_apt_get: true
 
 - name: Install common packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
   loop:
@@ -14,6 +14,7 @@
     - unattended-upgrades
 
 - name: Enforce automatic updates
-  copy:
+  ansible.builtin.copy:
     src: apt/20auto-upgrades
     dest: "{{ apt_conf_d }}"
+    mode: "0644"

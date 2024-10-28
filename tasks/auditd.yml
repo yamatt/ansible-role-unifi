@@ -1,24 +1,27 @@
 ---
 - name: Install auditd
-  apt:
+  ansible.builtin.apt:
     name: auditd
     state: present
 
 - name: Start the auditd service
-  service:
+  ansible.builtin.service:
     name: auditd
     state: started
-    enabled: yes
+    enabled: true
 
 # NOTE: Is the audit dir (/var/log/audit/audit.log) audited?
 - name: Create /tmp rules
-  copy:
+  ansible.builtin.copy:
     src: audit/tmp.rules
     dest: "{{ audit_rules_dir }}"
-  notify: rule merge
+    mode: "0644"
 
-- name: create admin home rules
-  copy:
+  notify: Rule merge
+
+- name: Create admin home rules
+  ansible.builtin.copy:
     src: audit/admin-home.rules
     dest: "{{ audit_rules_dir }}"
-  notify: rule merge
+    mode: "0644"
+  notify: Rule merge

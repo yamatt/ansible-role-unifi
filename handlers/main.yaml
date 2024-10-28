@@ -1,21 +1,23 @@
 ---
 # Handler for auditd service
-- name: rule merge
-  command: augenrules
-  notify: restart auditd
+- name: Rule merge
+  ansible.builtin.command: augenrules
+  notify: Restart auditd
 
-- name: restart auditd
-  service: name=auditd state=restarted
+- name: Restart auditd
+  ansible.builtin.service:
+    name: auditd
+    state: restarted
 
 # Handler for firewalld service
-- name: restart ufw
-  service:
+- name: Restart ufw
+  ansible.builtin.service:
     name: ufw
     state: restarted
 
 # Handler for nginx service
 - name: Restart Nginx
-  docker_container:
+  community.docker.docker_container:
     name: nginx
     state: started
-    restart: yes
+    restart: true

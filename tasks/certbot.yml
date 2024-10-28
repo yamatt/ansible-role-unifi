@@ -1,25 +1,25 @@
 ---
 - name: Make certbot directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    recurse: yes
+    recurse: true
   loop:
     - "{{ certbot_state_path }}"
 
 - name: Generate DH params
-  command: "openssl dhparam -out {{ nginx_certs_path }}/dhparam.pem 4096"
+  ansible.builtin.command: "openssl dhparam -out {{ nginx_certs_path }}/dhparam.pem 4096"
   args:
     creates: "{{ nginx_certs_path }}/dhparam.pem"
   when: not testing | default('no') | bool
 
 - name: Check if certbot has been successfully run before
-  stat:
+  ansible.builtin.stat:
     path: "{{ nginx_certs_path }}/live/{{ secrets.DOMAIN }}/fullchain.pem"
   register: certs_file
 
 - name: Run certbot image
-  docker_container:
+  community.docker.docker_container:
     name: certbot
     image: "certbot/certbot:{{ certbot_version }}"
     command: "certonly --non-interactive --agree-tos --email {{ secrets.CONTACT_EMAIL }} --webroot -w /var/www -d {{ secrets.DOMAIN }}"
@@ -30,7 +30,7 @@
   when: (not testing | default('no') | bool) or (not certs_file.stat.exists)
 
 - name: Renew certbot image
-  docker_container:
+  community.docker.docker_container:
     name: certbot-renew
     image: "certbot/certbot:{{ certbot_version }}"
     command: "certonly renew"
@@ -41,8 +41,9 @@
   when: (not testing | default('no') | bool) and certs_file.stat.exists
 
 - name: Add cert configuration to nginx
-  template:
+  ansible.builtin.template:
     src: certbot/nginx-certs.conf.j2
     dest: "{{ nginx_certs_config_path }}"
+    mode: "0644"
   notify: Restart Nginx
   when: not testing | default('no') | bool

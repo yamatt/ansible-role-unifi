@@ -1,24 +1,25 @@
 ---
 - name: Make unifi config directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    recurse: yes
+    recurse: true
   loop:
     - "{{ unifi_base_path }}"
     - "{{ unifi_config_path }}"
 
 - name: Create unifi configuration for nginx
-  template:
+  ansible.builtin.template:
     src: nginx/unifi.conf.j2
     dest: "{{ nginx_config_webgateway_path }}/unifi.conf"
+    mode: "0644"
 
 - name: Install Unifi image
-  docker_container:
+  community.docker.docker_container:
     name: unifi
     image: "linuxserver/unifi-controller:{{ unifi_version }}"
     state: started
-    restart: yes
+    restart: true
     published_ports:
       - "0.0.0.0:3478:3478/udp"
       - "0.0.0.0:8080:8080/tcp"
@@ -27,13 +28,13 @@
       - "{{ unifi_config_path }}:{{ unifi_config_volume_path }}"
 
 - name: Allow STUN UDP port
-  ufw:
+  community.general.ufw:
     rule: allow
     port: 3478
     proto: udp
 
-- name: device and application communication
-  ufw:
+- name: Device and application communication
+  community.general.ufw:
     rule: allow
     port: 8080
     proto: tcp
@@ -43,6 +44,6 @@
     name: "{{ webgateway_network_name }}"
     connected:
       - unifi
-    appends: yes
+    appends: true
   notify:
     - Restart Nginx

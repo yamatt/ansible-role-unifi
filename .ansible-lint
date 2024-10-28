@@ -1,0 +1,8 @@
+exclude_paths:
+  - .github
+  - molecule/
+  - tests/
+  - tasks/logdna.yml
+
+warn_list:
+  - yaml[comments]

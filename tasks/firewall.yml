@@ -1,44 +1,39 @@
 ---
 - name: Ensure ufw is installed
-  apt:
+  ansible.builtin.apt:
     name: ufw
     state: present
 
 # UFW has it's own service management layer. So no service module needed
 - name: Start the ufw service
-  ufw:
+  community.general.ufw:
     state: enabled
 
-- name: setup default outgoing rule
-  ufw:
-    rule: allow
-    direction: out
-
-- name: setup default outgoing rule
-  ufw:
+- name: Setup default outgoing rule
+  community.general.ufw:
     rule: allow
     direction: out
 
 - name: Limit number of SSH connections
-  ufw:
+  community.general.ufw:
     rule: limit
     port: ssh
     proto: tcp
   when: enable_ssh
 
 - name: Allow SSH access
-  ufw:
+  community.general.ufw:
     rule: allow
     name: OpenSSH
   when: enable_ssh
 
 - name: Disable SSH access if requested
-  ufw:
+  community.general.ufw:
     rule: reject
     name: OpenSSH
   when: not enable_ssh
 
-- name: set default incoming rule
-  ufw:
+- name: Set default incoming rule
+  community.general.ufw:
     rule: deny
     direction: in

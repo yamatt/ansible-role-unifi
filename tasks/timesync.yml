@@ -1,7 +1,7 @@
 ---
 - name: Check timesyncd is running
-  service:
+  ansible.builtin.service:
     name: systemd-timesyncd
     state: started
-    masked: no
-    enabled: yes
+    masked: false
+    enabled: true

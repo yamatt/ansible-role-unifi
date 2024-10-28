@@ -1,16 +1,17 @@
 ---
-- name : Format data disk if not already
-  filesystem:
+- name: Format data disk if not already
+  community.general.filesystem:
     fstype: "{{ data_disk_fs_type }}"
     dev: "{{ data_disk_device_path }}"
 
 - name: Create mount point directory for data disk
-  file:
+  ansible.builtin.file:
     path: "{{ data_disk_mount_point }}"
     state: directory
+    mode: "0755"
 
 - name: Update fstab and mount the disk
-  mount:
+  ansible.posix.mount:
     name: "{{ data_disk_mount_point }}"
     src: "{{ data_disk_device_path }}"
     opts: noatime

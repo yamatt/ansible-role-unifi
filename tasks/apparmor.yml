@@ -1,15 +1,15 @@
 ---
-- name: install addtional profiles
-  apt:
+- name: Install addtional profiles
+  ansible.builtin.apt:
     name: apparmor-profiles
     state: present
 
 - name: Ensure apparmor is enabled
-  service:
+  ansible.builtin.service:
     name: apparmor
-    enabled: yes
+    enabled: true
 
 - name: Ensure apparmor is running
-  service:
+  ansible.builtin.service:
     name: apparmor
     state: started

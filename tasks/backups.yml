@@ -3,7 +3,7 @@
   ansible.builtin.pip:
     name: "b2=={{ backups_b2_version }}"
 
-- name: authorise access to b2
+- name: Authorise access to b2
   ansible.builtin.command:
     argv:
       - "b2"
@@ -12,20 +12,22 @@
       - "{{ b2_unifi_backups_application_key }}"
     creates: /root/.b2_account_info
 
-- name: setup b2 systemd timer
-  copy:
+- name: Setup b2 systemd timer
+  ansible.builtin.copy:
     src: "backups/b2-backup.timer"
     dest: "/etc/systemd/system/b2-backups.timer"
+    mode: "0644"
 
-- name: setup b2 systemd service
-  template:
+- name: Setup b2 systemd service
+  ansible.builtin.template:
     src: "backups/b2-backup.service.j2"
     dest: "/etc/systemd/system/b2-backups.service"
+    mode: "0644"
 
-- name: enable and start systemd timer
+- name: Enable and start systemd timer
   ansible.builtin.systemd:
     name: b2-backups.timer
     state: started
-    enabled: yes
-    masked: no
+    enabled: true
+    masked: false
   when: not testing | default('no') | bool
