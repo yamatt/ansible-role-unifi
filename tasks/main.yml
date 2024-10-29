@@ -21,7 +21,7 @@
 - ansible.builtin.include_tasks: secrets.yml
   when: not testing | default('no') | bool
 
-- include_tasks: backups.yml
+- ansible.builtin.include_tasks: backups.yml
   when: not testing | default('no') | bool
 
 - ansible.builtin.include_tasks: rebuild.yml
