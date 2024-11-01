@@ -17,7 +17,7 @@
 - name: Install Unifi image
   community.docker.docker_container:
     name: unifi
-    image: "linuxserver/unifi-network-application:{{ unifi_version }}"
+    image: "linuxserver/unifi-unifi-controller:{{ unifi_version }}"
     state: started
     restart: true
     published_ports:
