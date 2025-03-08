@@ -4,7 +4,7 @@ apt_conf_d: /etc/apt/apt.conf.d/
 
 # disks
 data_disk_fs_type: xfs
-data_disk_device_path: /dev/sda
+data_disk_device_path: /dev/sdb
 data_disk_mount_point: /mnt/data
 
 # swap
